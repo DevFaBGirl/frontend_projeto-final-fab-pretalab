@@ -20,7 +20,7 @@ const EditForm: React.FC<EditFormProps> = ({ despesa, onClose, onSave }) => {
     e.preventDefault();
     try {
       console.log("Submitting form:", form); // Adicione este log para depuração
-      const response = await http.put(`/despesas/${despesa.id}`, form);
+      const response = await http.patch(`/despesas/${despesa.id}`, form);
       console.log("Response data:", response.data); // Adicione este log para depuração
       onSave(response.data);
       onClose();
