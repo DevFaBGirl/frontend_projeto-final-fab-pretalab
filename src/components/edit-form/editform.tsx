@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import * as S from "./styles";
 import { Despesa } from "../../pages/Dashboard";
 import http from "../../http";
@@ -19,11 +19,14 @@ const EditForm: React.FC<EditFormProps> = ({ despesa, onClose, onSave }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      console.log("Submitting form:", form); // Adicione este log para depuração
       const response = await http.put(`/despesas/${despesa.id}`, form);
+      console.log("Response data:", response.data); // Adicione este log para depuração
       onSave(response.data);
       onClose();
     } catch (error) {
       console.error("Erro ao atualizar despesa:", error);
+      
     }
   };
 

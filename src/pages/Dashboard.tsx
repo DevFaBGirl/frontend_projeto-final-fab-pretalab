@@ -74,7 +74,7 @@ const Dashboard = () => {
             <th>Valor</th>
             <th>Tipo</th>
             <th>Data</th>
-            <th>Editar</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
