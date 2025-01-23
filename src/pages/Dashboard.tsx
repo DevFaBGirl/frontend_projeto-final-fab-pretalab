@@ -5,8 +5,10 @@ import ChatGemini from "../components/chat-gemini/ChatGemini";
 import { auth } from "../services/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import http from "../http";
+import EditForm from "../components/edit-form/editform";
+import { FiEdit } from "react-icons/fi";
 
-type Despesa = {
+export type Despesa = {
   id: number;
   descricao: string;
   categoria: string;
@@ -19,6 +21,7 @@ type Despesa = {
 const Dashboard = () => {
   const [despesas, setDespesas] = useState([] as Despesa[]);
   const [user] = useAuthState(auth); 
+  const [editingDespesa, setEditingDespesa] = useState<Despesa | null>(null);
 
   useEffect(() => {
     const fetchDespesas = async () => {
@@ -30,7 +33,7 @@ const Dashboard = () => {
       }
     };
     fetchDespesas();
-  }, []);
+  }, [user]);
 
   const calcularTotais = () => {
     if (despesas.length === 0) {
@@ -50,26 +53,19 @@ const Dashboard = () => {
 
   const { entradas, saidas, saldo } = calcularTotais();
 
+  const handleEditClick = (despesa: Despesa) => {
+    setEditingDespesa(despesa);
+  };
+
+  const handleSave = (updatedDespesa: Despesa) => {
+    setDespesas((prev) =>
+      prev.map((d) => (d.id === updatedDespesa.id ? updatedDespesa : d))
+    );
+  };
+
   return (
     <S.TableContainer>
       <S.Title>Dashboard de Finanças</S.Title>
-      {/* Totais de Entradas, Saídas e Saldo */}
-      <S.CardsContainer>
-        <S.Card bgColor="#FF8C00">
-          <p>Entradas</p>
-          <p>R$ {entradas.toFixed(2)}</p>
-        </S.Card>
-        <S.Card bgColor="#B22222">
-          <p>Saídas</p>
-          <p>R$ {saidas.toFixed(2)}</p>
-        </S.Card>
-        <S.Card bgColor="#006400">
-          <p>Saldo</p>
-          <p>R$ {saldo.toFixed(2)}</p>
-        </S.Card>
-      </S.CardsContainer>
-
-      {/* Tabela com os dados das despesas */}
       <S.StyledTable>
         <thead>
           <tr>
@@ -78,6 +74,7 @@ const Dashboard = () => {
             <th>Valor</th>
             <th>Tipo</th>
             <th>Data</th>
+            <th>Editar</th>
           </tr>
         </thead>
         <tbody>
@@ -88,10 +85,37 @@ const Dashboard = () => {
               <td>R$ {despesa.valor.toFixed(2)}</td>
               <td>{despesa.tipo}</td>
               <td>{despesa.data}</td>
+              <td>
+                <FiEdit onClick={() => handleEditClick(despesa)} />
+              </td>
             </tr>
           ))}
         </tbody>
       </S.StyledTable>
+
+      <S.CardsContainer>
+        <S.Card bgColor="#4D3C6E">
+          <p>Entradas</p>
+          <p>R$ {entradas.toFixed(2)}</p>
+        </S.Card>
+        <S.Card bgColor="#D69A6C">
+          <p>Saídas</p>
+          <p>R$ {saidas.toFixed(2)}</p>
+        </S.Card>
+        <S.Card bgColor="#8C7BB6 ">
+          <p>Saldo</p>
+          <p>R$ {saldo.toFixed(2)}</p>
+        </S.Card>
+      </S.CardsContainer>
+
+      {editingDespesa && (
+        <EditForm
+          despesa={editingDespesa}
+          onClose={() => setEditingDespesa(null)}
+          onSave={handleSave}
+        />
+      )}
+
       <ChatGemini despesas={despesas} />
     </S.TableContainer>
   );

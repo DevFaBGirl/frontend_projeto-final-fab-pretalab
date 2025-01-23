@@ -87,10 +87,12 @@ export const Form = styled.form`
 
 export const Input = styled.input`
   ${inputStyles};
+  width: 300%;
 `;
 
 export const Select = styled.select`
   ${inputStyles};
+  width: 300%;
 `;
 
 export const Button = styled.button`
@@ -100,9 +102,11 @@ export const Button = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  width: 100%;
+  align-self: flex-end;
 
   &:hover {
-    background-color: #a020a0;
+    background-color: #8C7BB6 ;
   }
 `;
 
@@ -221,5 +225,6 @@ export const Card = styled.div<CardProps>`
   @media (max-width: 768px) {
     min-width: 150px;
     height: auto;
+    
   }
 `;
