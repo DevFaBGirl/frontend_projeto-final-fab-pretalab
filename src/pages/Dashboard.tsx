@@ -42,11 +42,11 @@ const Dashboard = () => {
 
     const entradas = despesas
       .filter((d) => d.tipo === "entrada" && typeof d.valor === "number")
-      .reduce((acc, d) => acc + d.valor, 0);
+      .reduce((acc, d) => acc + (typeof d.valor === "number" ? d.valor : 0), 0);
 
     const saidas = despesas
       .filter((d) => d.tipo === "saída" && typeof d.valor === "number")
-      .reduce((acc, d) => acc + d.valor, 0);
+      .reduce((acc, d) => acc + (typeof d.valor === "number" ? d.valor : 0), 0);
 
     return { entradas, saidas, saldo: entradas - saidas };
   };
