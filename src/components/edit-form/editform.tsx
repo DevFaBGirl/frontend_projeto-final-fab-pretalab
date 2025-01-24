@@ -22,7 +22,7 @@ const EditForm: React.FC<EditFormProps> = ({ despesa, onClose, onSave }) => {
       console.log("Submitting form:", form); // Adicione este log para depuração
       const response = await http.patch(`/despesas/${despesa.id}`, form);
       console.log("Response data:", response.data); // Adicione este log para depuração
-      onSave({ ...response.data, id: despesa.id }); // Certifique-se de manter o ID do registro
+      onSave(form); // Certifique-se de manter o ID do registro
       onClose();
     } catch (error) {
       console.error("Erro ao atualizar despesa:", error);

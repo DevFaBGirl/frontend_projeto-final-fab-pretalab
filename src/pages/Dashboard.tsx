@@ -65,15 +65,17 @@ const Dashboard = () => {
         valor: parseFloat(updatedDespesa.valor as string)
       };
 
-      await http.patch(`/despesas/${updatedDespesa.id}`, updatedDespesaWithNumber);
+      const response = await http.patch(`/despesas/${updatedDespesa.id}`, updatedDespesaWithNumber);
+      const updatedData = response.data;
+
       setDespesas((prev) =>
-        prev.map((d) => (d.id === updatedDespesa.id ? updatedDespesaWithNumber : d))
+        prev.map((d) => (d.id === updatedDespesa.id ? updatedData : d))
       );
       setEditingDespesa(null);
     } catch (error) {
       console.error("Erro ao atualizar despesa:", error);
     }
-  };
+  };;
 
   return (
     <S.TableContainer>
